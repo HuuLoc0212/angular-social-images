@@ -1,0 +1,37 @@
+<div class="p-2">
+  <div class="flex items-center justify-between">
+    <!-- Avatar -->
+    <div class="flex items-center space-x-2">
+      <img
+        (click)="goToProfile()"
+        class="object-cover w-8 h-8 mr-2 rounded-full cursor-pointer aspect-square"
+        src="{{ follower.avatar }}"
+        alt="{{ follower.username }}"
+      />
+      <!-- Username -->
+      <span
+        (click)="goToProfile()"
+        class="font-bold cursor-pointer hover:underline"
+        >{{ follower?.displayName ?? follower.username }}</span
+      >
+    </div>
+
+    <div *ngIf="!isMe">
+      <button
+        (click)="handleFollow()"
+        *ngIf="isFollow == false; else followed"
+        class="btn btn-primary !px-4 rounded-3xl font-semibold"
+      >
+        Follow
+      </button>
+      <ng-template #followed>
+        <button
+          (click)="handleFollow()"
+          class="btn btn-primary !px-4 rounded-3xl font-semibold !bg-gray-100 !text-black hover:!bg-gray-200"
+        >
+          Unfollow
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</div>

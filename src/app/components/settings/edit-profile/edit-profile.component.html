@@ -1,0 +1,115 @@
+<div class="max-w-[500px]">
+  <h1 class="text-3xl font-bold">Profile</h1>
+  <app-edit-profile-skeleton
+    *ngIf="isFetching; else content"
+  ></app-edit-profile-skeleton>
+  <ng-template #content>
+    <form [formGroup]="editUserForm" (ngSubmit)="handleSubmit()">
+      <div class="mt-8">
+        <span class="text-sm">Profile Picture</span>
+        <div class="flex items-center space-x-5">
+          <img
+            class="object-cover w-20 h-20 rounded-full"
+            [src]="imageSource"
+            [alt]="currentUser.username"
+          />
+
+          <!-- Button change image -->
+          <div
+            class="relative px-3 py-2 font-semibold bg-orange-100 rounded-3xl hover:bg-orange-200 active:scale-95"
+          >
+            <input
+              [disabled]="isLoading"
+              class="absolute top-0 left-0 w-full h-full opacity-0"
+              type="file"
+              (change)="showPreview($event)"
+            />
+            Change
+          </div>
+
+          <div class="text-red-500" *ngIf="imageError">File is not image</div>
+        </div>
+      </div>
+
+      <div class="flex mt-4">
+        <fieldset [disabled]="isLoading" class="flex-1 form-group">
+          <label class="text-sm" for="displayName">Display name</label>
+          <input
+            formControlName="displayName"
+            id="displayName"
+            class="form-control"
+          />
+        </fieldset>
+      </div>
+
+      <div class="mt-2">
+        <fieldset [disabled]="isLoading" class="form-group">
+          <label class="text-sm" for="bio">Bio</label>
+          <textarea
+            formControlName="bio"
+            id="bio"
+            rows="3"
+            class="form-control"
+            maxlength="300"
+          ></textarea>
+          <div *ngIf="f['bio'].invalid && (f['bio'].dirty || f['bio'].touched)">
+            <app-error-feedback
+              *ngIf="f['bio'].errors?.['maxlength']"
+              message="Maximum characters is 300."
+            ></app-error-feedback>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="mt-2">
+        <fieldset [disabled]="isLoading" class="form-group">
+          <label class="text-sm" for="username">Username</label>
+          <input
+            formControlName="username"
+            id="username"
+            cols="4"
+            class="form-control"
+          />
+          <span *ngIf="isUsernameExist" class="text-sm text-red-500"
+            >This username is already exist.</span
+          >
+          <div
+            *ngIf="
+              f['username'].invalid &&
+              (f['username'].dirty || f['username'].touched)
+            "
+          >
+            <app-error-feedback
+              *ngIf="f['username'].errors?.['required']"
+              message="Username can not be empty."
+            ></app-error-feedback>
+            <app-error-feedback
+              *ngIf="f['username'].errors?.['minlength']"
+              message="Username must be at least 4 characters."
+            ></app-error-feedback>
+            <app-error-feedback
+              *ngIf="f['username'].errors?.['maxlength']"
+              message="Username cannot be longer than 20 characters."
+            ></app-error-feedback>
+            <app-error-feedback
+              *ngIf="f['username'].errors?.['pattern']"
+              message="Username is not valid (Valid characters include a-z A-Z 0-9 - . _)"
+            ></app-error-feedback>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="flex items-center justify-center mt-2 text-center">
+        <app-spinner *ngIf="isLoading; else button"></app-spinner>
+        <ng-template #button>
+          <button
+            [disabled]="editUserForm.invalid"
+            class="outline-none btn btn-primary"
+          >
+            Save
+          </button>
+        </ng-template>
+      </div>
+    </form>
+  </ng-template>
+</div>

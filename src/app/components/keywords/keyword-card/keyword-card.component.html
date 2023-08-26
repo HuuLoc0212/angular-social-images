@@ -1,0 +1,13 @@
+<div
+  class="relative flex items-center justify-center h-[104px] overflow-hidden cursor-pointer rounded-2xl group"
+>
+  <img class="object-cover w-full h-full" [src]="keyword.imageUrl" alt="" />
+
+  <div
+    class="absolute inset-0 flex items-center justify-center transition-all bg-black/50 group-hover:bg-black/70"
+  >
+    <div class="text-lg font-extrabold text-white">
+      {{ keyword.title }}
+    </div>
+  </div>
+</div>

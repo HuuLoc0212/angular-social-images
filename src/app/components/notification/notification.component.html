@@ -1,0 +1,24 @@
+<div class="fixed top-0 right-0 h-[calc(100vh-72px)] mt-[72px] pb-2 px-2 z-40">
+  <div
+    class="flex flex-col h-full w-[350px] bg-white drop-shadow-xl rounded-3xl py-4"
+  >
+    <div class="flex-grow-0 my-2">
+      <h3 class="font-semibold text-center">Notification</h3>
+    </div>
+    <div class="flex-grow px-2 overflow-y-auto scrollbar">
+      <div
+        *ngIf="isLoading; else content"
+        class="flex items-center justify-center h-full"
+      >
+        <app-spinner></app-spinner>
+      </div>
+      <ng-template #content>
+        <app-notification-card
+          (onNotificationClick)="notificationClick()"
+          *ngFor="let notification of notifications"
+          [notification]="notification"
+        ></app-notification-card>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="mt-[72px] pt-2 px-2">
+  <div *ngIf="keyword" class="flex items-center px-2 space-x-3">
+    <span>Keyword: </span>
+    <div class="px-5 py-2 bg-orange-200 rounded-3xl">
+      <div class="font-semibold">{{ keyword }}</div>
+    </div>
+  </div>
+
+  <div class="container mx-auto mt-4">
+    <div
+      class="gap-3 mx-auto space-y-3 columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-7 pb-28"
+    >
+      <app-post-card *ngFor="let post of posts" [post]="post"></app-post-card>
+    </div>
+  </div>
+</div>

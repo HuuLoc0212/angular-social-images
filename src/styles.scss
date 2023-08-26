@@ -1,0 +1,49 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// regular style toast
+@import '~ngx-toastr/toastr';
+
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+
+* {
+  font-family: "Quicksand", sans-serif !important;
+}
+
+@layer components {
+  .form-control {
+    @apply px-3 py-1 border border-orange-500 rounded-md outline-orange-500;
+  }
+
+  .form-group {
+    @apply flex flex-col mb-3;
+  }
+
+  .btn {
+    @apply px-3 py-2 font-medium text-white  rounded-md active:scale-95 disabled:active:scale-100;
+  }
+
+  .btn-primary {
+    @apply bg-orange-500 hover:bg-orange-600 active:hover:border-orange-600 disabled:opacity-30 disabled:hover:bg-orange-500;
+  }
+
+  .tooltip {
+    @apply invisible absolute;
+  }
+
+  .has-tooltip:hover .tooltip {
+    @apply visible z-50;
+  }
+
+  // zoom image
+
+  .card-zoom {
+    @apply relative flex items-center justify-center m-3 overflow-hidden shadow-xl w-60 h-60 rounded-2xl;
+  }
+
+  .card-zoom-image {
+    @apply absolute w-full h-full transition-all duration-500 ease-in-out transform bg-center bg-cover;
+  }
+}

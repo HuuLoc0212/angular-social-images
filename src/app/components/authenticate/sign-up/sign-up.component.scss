@@ -1,0 +1,14 @@
+.bg-image {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.pexels.com/photos/7078227/pexels-photo-7078227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-position: center;
+  background-size: cover;
+}
+
+fa-icon {
+  font-size: 30px;
+}
+
+.invalid-input {
+  border-color: red !important;
+}

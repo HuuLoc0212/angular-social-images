@@ -1,0 +1,165 @@
+<div *ngIf="isExist; else not_found" class="flex flex-col items-center py-5">
+  <app-post-skeleton *ngIf="isLoading; else content"></app-post-skeleton>
+  <ng-template #content>
+    <div
+      class="flex flex-col lg:flex-row w-full lg:max-w-[1000px] shadow rounded-3xl overflow-hidden"
+    >
+      <div class="flex-1">
+        <div class="relative group">
+          <img
+            [ngClass]="imageHeight < 500 ? 'lg:p-4 lg:rounded-3xl' : ''"
+            class="object-cover w-full lg:rounded-l-3xl"
+            (load)="getImageHeight($event.currentTarget)"
+            src="{{ post?.imageUrl }}"
+            alt="{{ post?.title }}"
+          />
+
+          <div
+            class="absolute px-4 py-2 bg-white rounded-full cursor-pointer group-hover:!block hidden bottom-5 left-5 hover:bg-gray-200"
+            (click)="viewImage()"
+          >
+            <div class="flex items-center space-x-3">
+              <fa-icon class="text-2xl" [icon]="viewIcon"></fa-icon>
+              <div class="font-bold">View image</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1 px-8">
+        <!-- Header -->
+        <div class="flex items-center justify-between pt-8">
+          <div class="flex space-x-2">
+            <!-- Download -->
+            <div
+              (click)="handleDownload()"
+              class="flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full cursor-pointer has-tooltip hover:bg-orange-300"
+            >
+              <fa-icon
+                class="text-xl transition-all duration-300 hover:scale-110"
+                [icon]="downloadIcon"
+              ></fa-icon>
+              <span
+                class="p-1 mt-20 text-white bg-orange-500 rounded shadow-lg tooltip"
+                >Download Image</span
+              >
+            </div>
+
+            <!-- Copy link -->
+            <div
+              (click)="handleCopy()"
+              class="flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full cursor-pointer has-tooltip hover:bg-orange-300"
+            >
+              <fa-icon
+                class="text-xl transition-all duration-300 hover:scale-110"
+                [icon]="copyIcon"
+              ></fa-icon>
+              <span
+                class="p-1 mt-20 text-white bg-orange-500 rounded shadow-lg tooltip"
+                >Copy Image Url</span
+              >
+            </div>
+            <!-- Heart -->
+            <div class="flex items-center justify-center space-x-1">
+              <div (click)="handleLikePost()" class="cursor-pointer">
+                <fa-icon
+                  [ngClass]="isLiked == true ? 'text-red-500' : 'text-black'"
+                  class="flex items-center justify-center w-10 h-10 text-xl transition-all duration-300 hover:scale-125 active:text-red-500"
+                  [icon]="heartIcon"
+                ></fa-icon>
+              </div>
+
+              <span>{{ post?.likes?.length ?? 0 }}</span>
+            </div>
+          </div>
+
+          <div
+            *ngIf="isAuthor"
+            (click)="handleEditPost()"
+            class="cursor-pointer has-tooltip"
+          >
+            <fa-icon
+              class="flex items-center justify-center w-10 h-10 text-xl transition-all duration-300 hover:scale-125 active:text-red-500"
+              [icon]="editIcon"
+            ></fa-icon>
+            <span class="p-1 text-white bg-orange-500 rounded shadow-lg tooltip"
+              >Edit</span
+            >
+          </div>
+        </div>
+        <div class="flex items-center justify-between mt-4 space-x-2">
+          <div class="flex items-center space-x-2">
+            <img
+              routerLink="/profile/{{ post?.author?.username }}"
+              class="object-cover w-10 h-10 rounded-full cursor-pointer"
+              src="{{ post?.author?.avatar }}"
+              alt="{{ post?.author?.username }}"
+            />
+            <div
+              routerLink="/profile/{{ post?.author?.username }}"
+              class="flex flex-col"
+            >
+              <span class="font-semibold cursor-pointer">{{
+                post?.author?.displayName ?? post?.author?.username
+              }}</span>
+              <span class="text-sm cursor-pointer"
+                >@{{ post?.author?.username }}</span
+              >
+            </div>
+          </div>
+
+          <div *ngIf="!isAuthor">
+            <button
+              *ngIf="isFollow; else is_follow"
+              (click)="handleFollow()"
+              class="btn btn-primary !rounded-3xl font-semibold !bg-gray-100 hover:!bg-gray-200 !text-black"
+            >
+              Unfollow
+            </button>
+
+            <ng-template #is_follow>
+              <button
+                (click)="handleFollow()"
+                class="btn btn-primary !rounded-3xl"
+              >
+                Follow
+              </button>
+            </ng-template>
+          </div>
+        </div>
+        <!-- Body -->
+        <div class="mt-4">
+          <h1 class="!font-sans text-4xl font-bold tracking-wide leading-tight">
+            {{ post?.title }}
+          </h1>
+          <p class="mt-4 font-medium description">{{ post?.description }}</p>
+
+          <!-- Comment Section -->
+          <app-post-comment [postId]="post?.id"></app-post-comment>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="mt-4 text-2xl font-semibold">Related posts</h2>
+  </ng-template>
+
+  <div class="mt-4">
+    <div
+      class="gap-3 mx-auto space-y-3 columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-7 pb-28"
+    >
+      <app-post-card
+        *ngFor="let post of relatedPosts"
+        [post]="post"
+      ></app-post-card>
+    </div>
+  </div>
+</div>
+
+<app-edit-post
+  *ngIf="isEdit"
+  [post]="post"
+  (onClose)="handleEditPost()"
+></app-edit-post>
+
+<ng-template #not_found>
+  <app-not-found-page></app-not-found-page>
+</ng-template>

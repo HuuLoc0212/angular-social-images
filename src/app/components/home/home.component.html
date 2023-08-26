@@ -1,0 +1,16 @@
+<div
+  class="absolute left-0 right-0 top-[72px] bottom-0 pt-2 px-2 h-[calc(100vh - 72px)] overflow-y-auto"
+  scrollable
+  (scrollPosition)="scrollHandler($event)"
+>
+  <div class="container mx-auto">
+    <div
+      class="gap-3 mx-auto space-y-3 columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-7 pb-28"
+    >
+      <app-post-card
+        *ngFor="let post of page.data | async"
+        [post]="post"
+      ></app-post-card>
+    </div>
+  </div>
+</div>

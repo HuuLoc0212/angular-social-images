@@ -1,0 +1,138 @@
+<form [formGroup]="editPostForm" (ngSubmit)="handleSubmit()">
+  <div
+    class="mx-4 fixed z-60 left-0 right-0 md:mx-auto top-10 h-[650px] bg-white md:w-[700px] rounded-3xl overflow-hidden flex flex-col"
+  >
+    <!-- header -->
+    <div class="relative py-6 mx-6">
+      <div class="text-2xl font-semibold text-center">Edit post</div>
+
+      <fa-icon
+        class="absolute right-0 text-2xl text-black transition-all -translate-y-1/2 cursor-pointer top-1/2"
+        (click)="handleClose()"
+        [icon]="faClose"
+      ></fa-icon>
+    </div>
+    <!-- body -->
+    <div class="px-2 grow">
+      <div
+        class="flex flex-col px-4 mt-2 space-y-5 md:space-y-0 md:space-x-5 md:flex-row"
+      >
+        <div class="space-y-4 flex-3">
+          <fieldset
+            [disabled]="isLoading"
+            class="grid items-center grid-cols-3"
+          >
+            <div class="font-semibold">Title</div>
+            <input
+              formControlName="title"
+              class="col-span-2 form-control !rounded-xl !py-2"
+              type="text"
+            />
+          </fieldset>
+
+          <fieldset
+            [disabled]="isLoading"
+            class="grid items-center grid-cols-3"
+          >
+            <div class="font-semibold">Description</div>
+
+            <div
+              class="flex items-center w-full col-span-2 px-3 py-2 border border-orange-500 rounded-xl focus-within:border-2"
+            >
+              <textarea
+                formControlName="description"
+                autosize
+                minRows="1"
+                class="w-full outline-none resize-none"
+              ></textarea>
+            </div>
+          </fieldset>
+
+          <fieldset
+            [disabled]="isLoading"
+            class="relative grid items-center grid-cols-3"
+          >
+            <div class="font-semibold">Keywords</div>
+            <input
+              formControlName="keywords"
+              class="col-span-2 form-control !rounded-xl !py-2"
+              type="text"
+            />
+            <div
+              *ngIf="
+                f['keywords'].invalid &&
+                (f['keywords'].dirty || f['keywords'].touched)
+              "
+            >
+              <app-error-feedback
+                *ngIf="f['keywords'].errors?.['required']"
+                message="Please enter some keywords related to post"
+              ></app-error-feedback>
+              <app-error-feedback
+                *ngIf="f['keywords'].errors?.['pattern']"
+                message="Please enter valid characters (a-z, A-Z, 0-9 and ,)"
+              ></app-error-feedback>
+            </div>
+            <div
+              class="absolute z-10 flex items-center justify-center w-5 h-5 right-2 top-3 has-tooltip"
+            >
+              <fa-icon
+                class="text-lg text-orange-500"
+                [icon]="faQuestion"
+              ></fa-icon>
+              <div
+                class="p-1 mr-36 text-white bg-orange-500 rounded shadow-lg tooltip w-[120px] text-center"
+              >
+                separate words with "," (Comma)
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="flex justify-center flex-1">
+          <img
+            class="rounded-lg max-h-[300px] md:max-h-fit"
+            src="{{ post?.imageUrl }}"
+            alt=""
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="py-4 mx-6">
+      <div
+        [ngClass]="isLoading ? 'justify-center' : 'justify-between'"
+        class="flex"
+      >
+        <app-spinner *ngIf="isLoading; else buttonGroup"></app-spinner>
+        <ng-template #buttonGroup>
+          <button
+            (click)="handleDelete()"
+            class="px-5 py-3 font-semibold text-black bg-gray-100 rounded-3xl hover:bg-gray-200 active:scale-95"
+          >
+            Delete
+          </button>
+
+          <div class="flex space-x-3">
+            <button
+              (click)="handleClose()"
+              class="px-5 py-3 font-semibold text-black bg-gray-100 rounded-3xl hover:bg-gray-200 active:scale-95"
+            >
+              Cancel
+            </button>
+            <button
+              class="px-5 py-3 font-semibold text-white bg-orange-500 rounded-3xl hover:bg-orange-600 active:scale-95"
+            >
+              Save
+            </button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</form>
+<!-- overlay -->
+<div
+  class="fixed inset-0 z-50 h-full bg-black/50"
+  (click)="handleClose()"
+></div>

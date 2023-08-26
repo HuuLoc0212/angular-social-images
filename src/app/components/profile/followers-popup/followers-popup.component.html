@@ -1,0 +1,33 @@
+<div
+  class="mx-4 fixed z-70 left-0 right-0 md:mx-auto top-10 h-[650px] bg-white md:w-[350px] rounded-3xl overflow-hidden"
+>
+  <!-- header -->
+  <div class="relative py-6 mx-6">
+    <div class="text-2xl font-semibold text-center">
+      {{ followers.length }} follower{{ followers.length | plural }}
+    </div>
+
+    <fa-icon
+      class="absolute right-0 text-2xl text-black transition-all -translate-y-1/2 cursor-pointer top-1/2"
+      (click)="handleClose()"
+      [icon]="faClose"
+    ></fa-icon>
+  </div>
+  <!-- body -->
+  <div class="absolute bottom-0 left-0 right-0 px-2 overflow-y-scroll top-20">
+    <div *ngIf="isLoading; else content">Loading...</div>
+    <ng-template #content>
+      <app-follower-card
+        (onNavigate)="handleClose()"
+        *ngFor="let follower of followers"
+        [follower]="follower"
+      ></app-follower-card>
+    </ng-template>
+  </div>
+</div>
+
+<!-- overlay -->
+<div
+  class="fixed inset-0 h-full z-60 bg-black/50"
+  (click)="handleClose()"
+></div>

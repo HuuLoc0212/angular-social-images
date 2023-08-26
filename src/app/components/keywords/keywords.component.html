@@ -1,0 +1,10 @@
+<div>
+  <div class="mb-1 font-medium">{{ title }}</div>
+  <div class="grid grid-cols-4 grid-rows-2 gap-3">
+    <app-keyword-card
+      (click)="searchKeyword(keyword)"
+      *ngFor="let keyword of keywords"
+      [keyword]="keyword"
+    ></app-keyword-card>
+  </div>
+</div>

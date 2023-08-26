@@ -1,0 +1,140 @@
+<div class="md:h-screen pt-[72px] px-2 pb-2 bg-orange-50">
+  <div class="flex justify-center h-full mt-2 md:mt-0 md:items-center">
+    <div
+      class="relative w-[800px] bg-white rounded-3xl py-10 px-2 md:px-10 overflow-hidden"
+    >
+      <fa-icon
+        class="absolute text-2xl text-black cursor-pointer right-7 top-5"
+        routerLink="/"
+        [icon]="faClose"
+      >
+      </fa-icon>
+      <form [formGroup]="createPostForm" (ngSubmit)="submit()">
+        <div class="flex flex-col space-y-5 md:flex-row md:space-y-0">
+          <!-- Column 1 (Image) -->
+          <div
+            class="md:flex-1 h-[500px] overflow-hidden mx-5 rounded-md relative"
+          >
+            <div *ngIf="!imageSource" class="h-full p-4 bg-orange-100">
+              <div
+                class="flex flex-col items-center justify-center h-full border-2 border-gray-300 border-dashed"
+              >
+                <fa-icon class="text-3xl" [icon]="faUpload"></fa-icon>
+                <div>Upload image</div>
+              </div>
+            </div>
+
+            <div
+              class="absolute inset-0"
+              *ngIf="imageSource && imageSource !== ''"
+            >
+              <img [src]="imageSource" class="rounded-md" />
+            </div>
+
+            <input
+              type="file"
+              [disabled]="isLoading"
+              class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer bg-inherit"
+              accept="image/*"
+              (change)="showPreview($event)"
+            />
+            <div *ngIf="imageError">File is not image</div>
+          </div>
+
+          <!-- Column 2 (Post Detail)-->
+          <div class="mx-5 md:flex-1">
+            <div class="flex items-center mt-2 space-x-2">
+              <img
+                class="object-cover w-10 h-10 rounded-full cursor-pointer"
+                [src]="currentUser?.avatar"
+                alt=""
+              />
+              <div class="flex flex-col cursor-pointer">
+                <span class="font-semibold">{{
+                  currentUser?.displayName ?? currentUser?.username!
+                }}</span>
+                <span class="text-sm">@{{ currentUser?.username }}</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col justify-between">
+              <div>
+                <fieldset class="mt-5" [disabled]="isLoading">
+                  <input
+                    formControlName="title"
+                    placeholder="Enter title (Optional)"
+                    type="text"
+                    class="w-full text-xl font-bold border-b outline-none border-b-orange-500 focus:border-b-2"
+                  />
+                </fieldset>
+
+                <fieldset class="mt-10" [disabled]="isLoading">
+                  <textarea
+                    formControlName="description"
+                    placeholder="Description of the image (Optional)"
+                    autosize
+                    [maxRows]="10"
+                    minRows="1"
+                    class="w-full border-b border-orange-500 outline-none resize-none"
+                  ></textarea>
+                </fieldset>
+
+                <fieldset class="relative mt-5" [disabled]="isLoading">
+                  <input
+                    formControlName="keywords"
+                    placeholder="Enter keywords related to this post"
+                    type="text"
+                    class="w-full pr-4 border-b outline-none border-b-orange-500 focus:border-b-2"
+                  />
+                  <div
+                    *ngIf="
+                      f['keywords'].invalid &&
+                      (f['keywords'].dirty || f['keywords'].touched)
+                    "
+                  >
+                    <app-error-feedback
+                      *ngIf="f['keywords'].errors?.['required']"
+                      message="Please enter some keywords related to post"
+                    ></app-error-feedback>
+                    <app-error-feedback
+                      *ngIf="f['keywords'].errors?.['pattern']"
+                      message="Valid character (a-z, A-Z, 0-9 and ,)"
+                    ></app-error-feedback>
+                  </div>
+                  <div
+                    class="absolute top-0 right-0 z-10 flex items-center justify-center w-5 h-5 has-tooltip"
+                  >
+                    <fa-icon
+                      class="text-lg text-orange-500"
+                      [icon]="faQuestion"
+                    ></fa-icon>
+                    <div
+                      class="p-1 mr-36 text-white bg-orange-500 rounded shadow-lg tooltip w-[120px] text-center"
+                    >
+                      separate words with "," (Comma)
+                    </div>
+                  </div>
+                  <!-- <span class="text-xs text-orange-600"
+                    >*separate words with "," (Comma)</span
+                  > -->
+                </fieldset>
+              </div>
+
+              <div class="flex items-center justify-center mt-10 text-center">
+                <app-spinner *ngIf="isLoading; else button"></app-spinner>
+                <ng-template #button>
+                  <button
+                    [disabled]="createPostForm.invalid || isLoading"
+                    class="btn btn-primary"
+                  >
+                    Create
+                  </button>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

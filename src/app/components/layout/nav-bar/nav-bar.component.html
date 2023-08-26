@@ -1,0 +1,132 @@
+<div class="fixed top-0 flex items-center w-full p-4 bg-white h-[72px] z-50">
+  <nav class="flex items-center justify-between flex-none w-full">
+    <a
+      class="text-3xl font-bold text-orange-500 cursor-pointer"
+      (click)="navigateHome()"
+    >
+      Imagesio
+    </a>
+
+    <!-- Search  -->
+    <div class="justify-center hidden mx-10 md:flex grow">
+      <div class="md:w-full">
+        <div class="relative flex w-full overflow-hidden input-group">
+          <input
+            #search
+            (click)="preventCloseSearchClick()"
+            (focus)="isOpenSearch = true"
+            [(ngModel)]="searchQuery"
+            (keydown.enter)="handleSearch()"
+            [ngClass]="
+              searchQuery && searchQuery.length > 0
+                ? 'rounded-r-none'
+                : 'rounded-r-3xl'
+            "
+            type="search"
+            class="relative block min-w-0 px-6 py-2.5 m-0 text-base font-normal text-gray-700 transition ease-in-out bg-white border border-gray-300 border-solid rounded rounded-l-3xl form-control grow bg-clip-padding focus:text-gray-700 focus:bg-white focus:border-orange-600 focus:outline-none"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button
+            (click)="handleSearch()"
+            *ngIf="searchQuery && searchQuery.length > 0"
+            class="flex items-center w-[80px] justify-center flex-none px-6 py-4 text-xs font-medium leading-tight text-white uppercase transition duration-150 ease-in-out bg-orange-500 rounded rounded-l-none shadow-md rounded-r-3xl btn hover:bg-orange-600 hover:shadow-lg focus:bg-orange-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-orange-700 active:shadow-lg"
+            type="button"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="search"
+              class="w-4"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <path
+                fill="currentColor"
+                d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="items-center flex-none hidden space-x-3 md:flex">
+      <div class="relative">
+        <fa-icon
+          (click)="toggleNotification(); preventCloseOnClick()"
+          class="flex items-center justify-center w-10 h-10 text-2xl text-orange-500 rounded-full cursor-pointer hover:bg-orange-200"
+          [icon]="faBell"
+        ></fa-icon>
+
+        <!-- Badge -->
+        <div
+          *ngIf="notificationBadge"
+          class="absolute top-0 left-0 flex items-center justify-center w-2 h-3 p-2 text-xs text-white bg-red-500 rounded-full"
+        >
+          {{ notificationBadge }}
+        </div>
+      </div>
+
+      <div class="w-8 h-8">
+        <img
+          routerLink="/profile/{{ currentUser?.username }}"
+          class="w-full h-full rounded-full cursor-pointer"
+          src="{{ currentUser?.avatar }}"
+          alt="{{ currentUser?.username }}"
+        />
+      </div>
+
+      <a
+        class="font-semibold text-orange-500 cursor-pointer hover:underline"
+        (click)="signOut()"
+        >Sign out</a
+      >
+    </div>
+
+    <span class="md:hidden" (click)="toggleSidebar()">
+      <fa-icon class="text-xl" [icon]="faBars"></fa-icon>
+    </span>
+  </nav>
+
+  <!-- Sidebar -->
+  <div
+    [ngClass]="!isOpenSidebar ? '-translate-x-full' : 'translate-x-0'"
+    class="h-full fixed inset-0 w-[300px] bg-black z-20 flex flex-col transition-all duration-300"
+  >
+    <div class="flex-1">header</div>
+    <div class="flex-4">body</div>
+    <div class="flex-1">footer</div>
+  </div>
+
+  <!-- Overlay when sidebar is open -->
+  <div
+    (click)="toggleSidebar()"
+    [ngClass]="!isOpenSidebar ? 'hidden' : 'block'"
+    class="fixed inset-0 z-10 bg-black/80"
+  ></div>
+</div>
+
+<!-- notification -->
+<app-notification
+  *ngIf="isOpenNotification"
+  (click)="preventCloseOnClick()"
+  (onNotificationClick)="isOpenNotification = !isOpenNotification"
+></app-notification>
+
+<!-- Search modal -->
+<app-search
+  *ngIf="isOpenSearch"
+  (click)="preventCloseSearchClick()"
+  (onKeywordClick)="isOpenSearch = false"
+></app-search>
+<!-- *ngIf="isOpenSearch " -->
+
+<!-- overlay when search is open-->
+<div
+  *ngIf="isOpenSearch"
+  class="fixed inset-0 z-40 w-full h-full bg-black/50"
+></div>
+<!-- *ngIf="isOpenSearch " -->

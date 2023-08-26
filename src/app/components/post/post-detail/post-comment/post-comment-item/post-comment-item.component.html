@@ -1,0 +1,32 @@
+<div class="flex items-start">
+  <!-- Avatar -->
+  <img
+    class="object-cover w-8 h-8 mr-2 rounded-full aspect-square"
+    src="{{ comment.author?.avatar }}"
+    alt="{{ comment.author?.username }}"
+  />
+
+  <!-- Content -->
+  <div class="flex-grow">
+    <!-- Username -->
+    <p class="font-medium leading-snug">
+      <span class="font-bold cursor-pointer hover:underline">{{
+        comment.author?.username
+      }}</span>
+      {{ comment.content }}
+    </p>
+    <!-- Reaction -->
+    <div class="flex items-center space-x-5">
+      <span class="text-sm font-medium text-gray-500">{{comment.createdAt | dateAgo}}</span>
+      <span class="text-sm font-bold text-gray-500 cursor-pointer">Reply</span>
+
+      <div class="text-sm text-gray-500">
+        <fa-icon
+          class="transition-all duration-300 cursor-pointer hover:scale-110"
+          [icon]="heartIcon"
+        ></fa-icon>
+        <span class="ml-2">{{comment.likes?.length ?? 0}}</span>
+      </div>
+    </div>
+  </div>
+</div>

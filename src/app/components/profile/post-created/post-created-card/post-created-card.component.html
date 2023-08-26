@@ -1,0 +1,17 @@
+<div class="flex flex-col mb-4 rounded-3xl break-inside-avoid">
+  <div class="relative cursor-pointer group max-h-[600px]">
+    <img
+      class="object-cover w-full h-full rounded-3xl"
+      src="{{ post.imageUrl }}"
+      alt="{{ post.title }}"
+    />
+    <div
+      class="absolute inset-0 z-30 hidden w-full h-full rounded-3xl group-hover:block"
+    >
+      <div
+        class="w-full h-full rounded-3xl bg-black/50"
+        (click)="goToPost()"
+      ></div>
+    </div>
+  </div>
+</div>

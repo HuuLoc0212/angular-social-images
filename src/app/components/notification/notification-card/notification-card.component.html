@@ -1,0 +1,39 @@
+<div
+  (click)="handleClick()"
+  class="p-2 transition-all rounded-md cursor-pointer hover:bg-gray-200"
+>
+  <div class="flex items-start">
+    <!-- Avatar -->
+    <img
+      class="object-cover w-8 h-8 mr-2 rounded-full aspect-square"
+      src="{{ notification.userSend?.avatar }}"
+      alt=""
+    />
+
+    <!-- Content -->
+    <div class="flex-grow">
+      <!-- Username -->
+      <p class="font-medium leading-4">
+        <span class="font-bold">{{
+          notification.userSend?.displayName ?? notification.userSend?.username
+        }}</span>
+        <span>{{
+          notification.state == StateType.like
+            ? " liked your post"
+            : notification.state == StateType.follow
+            ? " started following you"
+            : " has comment on your post"
+        }}</span>
+        <span *ngIf="notification.post?.title" class="font-semibold"
+          >: "{{ notification.post!.title | truncate: [20, "..."] }}"</span
+        >
+      </p>
+
+      <div class="flex items-center space-x-5">
+        <span class="text-sm font-medium text-gray-500">{{
+          notification?.createdAt | dateAgo
+        }}</span>
+      </div>
+    </div>
+  </div>
+</div>
